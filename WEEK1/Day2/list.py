@@ -49,3 +49,12 @@ print(new_sorted)
 fruits=["apple","banana","strawbery","bluberry","banana"]
 item_occurence=fruits.count("banana")
 print(item_occurence)
+
+# list comprehensive 
+
+even_number=[i**3 for i in range(10) if i%2==0]
+print(even_number)
+
+marks=[1,2,3,4]
+new_marks=[x+2 for x in marks ]
+print(new_marks)
