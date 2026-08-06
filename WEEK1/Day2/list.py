@@ -58,3 +58,12 @@ print(even_number)
 marks=[1,2,3,4]
 new_marks=[x+2 for x in marks ]
 print(new_marks)
+
+# map function
+celsius = [0, 10, 20, 30, 40]
+
+def to_fahrenheit(temp):
+    return (temp * 9/5) + 32
+
+fahrenheit = list(map(to_fahrenheit, celsius))
+print(fahrenheit)
