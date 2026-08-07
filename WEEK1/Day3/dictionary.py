@@ -16,3 +16,12 @@ dict(b)
 print(b)
 
 
+laptops={
+    'Laptop':99,
+     "hello":34,
+     "hi":45,
+     "smart":56
+}
+
+for products in laptops.items():
+    print(products)
