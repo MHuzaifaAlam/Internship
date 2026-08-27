@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POSTS</title>
+</head>
+<body>
+    <a href="{% url 'post_create' %}">Create Post</a>
+    {% for post in posts %}
+    <h1>{{post.title}}</h1>
+    <p>{{post.content}}</p>
+    <p>{{post.create_at}}</p>
+    <a href="{% url 'post_delete' post.pk %}">Delete Post</a>
+     <a href="{% url 'post_update' post.pk %}">Update Post</a>
+    {% endfor %}
+</body>
+</html>
