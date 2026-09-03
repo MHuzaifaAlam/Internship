@@ -43,6 +43,24 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
+class Task(models.Model):
+    title=models.CharField(max_length=200)
+    description=models.TextField(blank=True)
+    project=models.ForeignKey(
+        Project,
+        on_delete=models.CASCADE,
+        related_name="tasks")
+    assigned_to=models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name="tasks",
+        blank=True
+    )
+    created_at=models.DateTimeField(auto_now_add=True)
+    estimated_hours = models.PositiveIntegerField(default=0)
+    actual_hours= models.PositiveBigIntegerField(default=0)
+    def __str__(self):
+        return self.title
+
 
 
 
