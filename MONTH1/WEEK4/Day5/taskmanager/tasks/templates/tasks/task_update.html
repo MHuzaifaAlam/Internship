@@ -1,21 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update Task</title>
-</head>
-<body>
-    <h1> UPDATE TASK </h1>
-    <form method="POST">
-        {%csrf_token%}
-        <label>Title:</label>
-        <input type="text" name="title" value="{{task.title}}">
-        <br><br>
-        <label>Description</label>
-        <textarea name="description">{{task.description}}</textarea>
-        <br><br>
-        <button type="submit">Update Text</button>
-    </form>
-</body>
-</html>
+<form method="POST">
+    {% csrf_token %}
+
+    {% if form.non_field_errors %}
+        <div style="color: red;">
+            {{ form.non_field_errors }}
+        </div>
+    {% endif %}
+
+    {% for field in form %}
+        <div style="margin-bottom: 15px;">
+            <label>{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+                <div style="color: red; font-size: 0.9em;">
+                    {{ field.errors }}
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+    <button type="submit">Update Task</button>
+</form>

@@ -43,6 +43,20 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
+class TaskQuerySet(models.QuerySet):
+    def active(self):
+        return self.filter(project__status="active")
+    def completed(self):
+        return self.filter(actual_hours=models.F("estimated_hours"))
+
+class TaskManager(models.Manager):
+    def get_queryset(self):
+        return TaskQuerySet(self.model,using=self.db)
+    def active(self):
+        return self.get_queryset().active()
+    def completed(self):
+        return self.get_queryset().completed()
+    
 class Task(models.Model):
     title=models.CharField(max_length=200)
     description=models.TextField(blank=True)
@@ -58,6 +72,7 @@ class Task(models.Model):
     created_at=models.DateTimeField(auto_now_add=True)
     estimated_hours = models.PositiveIntegerField(default=0)
     actual_hours= models.PositiveBigIntegerField(default=0)
+    objects=TaskQuerySet.as_manager()
     def __str__(self):
         return self.title
 

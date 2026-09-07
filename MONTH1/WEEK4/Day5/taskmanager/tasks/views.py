@@ -1,51 +1,42 @@
-from django.shortcuts import render,get_object_or_404,redirect
-from .models import Task,Project
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
+from django.views.generic import ListView,DeleteView,CreateView,UpdateView,DetailView
+from .models import Task
+from .forms import TaskForm
+class TaskListView(LoginRequiredMixin,ListView):
+    model=Task
+    template_name="tasks/task_list.html"
+    context_object_name="tasks"
+    def get_queryset(self):
+        return Task.objects.filter(assigned_to=self.request.user)
 
-def task_list(request):
-    tasks=Task.objects.all()
 
-    return render(request,"tasks/task_list.html",{
-        "tasks":tasks
-    })
+class TaskDetailView(DetailView):
+    model=Task
+    template_name="tasks/task_detail.html"
+    context_object_name="tasks"
+    pk_url_kwarg="id"
 
-def task_detail(request,id):
-    task=get_object_or_404(Task,id=id)
-    return render(request,"tasks/task_detail.html",{
-        "task":task
-        })
+class TaskCreateView(CreateView):
+    model=Task
+    form_class=TaskForm
+    template_name="tasks/task_create.html"
+    sucess_url=reverse_lazy("task_list")
 
-def task_create(request):
-    if request.method == "POST":
-        title=request.POST.get("title")
-        description=request.POST.get("description")
-        project=Project.objects.first()
-        Task.objects.create(
-            title=title,
-            description=description,
-            project=project
-        )
-        return redirect("task_list")
-    return render(request,"tasks/task_create.html")
+class TaskUpdateView(UpdateView):
+    model=Task
+    form_class=TaskForm
+    template_name="tasks/task_update.html"
+    pk_url_kwarg="id"
+    success_url=reverse_lazy("task_list")
 
-def task_update(request,id):
-    task=get_object_or_404(Task,id=id)
-    if request.method=="POST":
-        task.title=request.POST.get("title")
-        task.description=request.POST.get("description")
-        task.save()
-        return redirect("task_list")
-    return render(request,"tasks/task_update.html",{
-        "task":task
-    })
 
-def delete_task(request,id):
-    task=get_object_or_404(Task,id=id)
-    if request.method=="POST":
-        task.delete()
-        return render("task_list")
-    return render(request,"delete_task.html",{
-        "task":task
-    })
+class TaskDeleteView(DeleteView):
+    model=Task
+    template_name="tasks/delete_task.html"
+    context_object_name="tasks"
+    pk_url_kwarg="id"
+    success_url=reverse_lazy("task_list")
 
 
     

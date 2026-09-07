@@ -9,7 +9,11 @@
     <h1>
      My Tasks
     </h1>
-    <a href="{%url 'task_create% task.id'}">Create Task</a>
+    <a href="{% url 'task_create' %}">Create Task</a>
+   <form action="{% url 'logout' %}" method="post">
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+</form>
     {%for task in tasks%}
   <h2><a href="{%url  'task_detail' task.id %}">Task: {{task.title|upper}}</a></h2>
   <p>Project: {{task.project.title|title}}</p>
