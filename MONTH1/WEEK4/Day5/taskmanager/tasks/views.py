@@ -68,9 +68,17 @@ class TaskFilterView(View):
         return redirect("task_list")
 
 class TaskListAPIView(ListCreateAPIView):
-    queryset=Task.objects.all()
-    serializer_class=TaskSerializer
+    serializer_class = TaskSerializer
 
+    def get_queryset(self):
+        queryset = Task.objects.all()
+
+        project_id = self.request.query_params.get("project")
+
+        if project_id:
+            queryset = queryset.filter(project_id=project_id)
+
+        return queryset
 
 class TaskDetailAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class=TaskSerializer
