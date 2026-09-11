@@ -17,10 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from django.contrib.auth import views as auth_views
+from tasks.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('tasks/',include("tasks.urls")),
+
+    path("api/tasks/", TaskListAPIView.as_view(), name="api_task_list"),
+    path("api/tasks/<int:pk>/",TaskDetailAPIView.as_view(),name="api_task_detail"),
     path("login/",auth_views.LoginView.as_view(template_name="registration/login.html" ),name="login"),
     path(
     "logout/",
