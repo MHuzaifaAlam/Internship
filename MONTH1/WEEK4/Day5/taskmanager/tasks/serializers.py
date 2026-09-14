@@ -22,7 +22,15 @@ class UserSerializer(serializers.ModelSerializer):
 
 class TaskSerializer(serializers.ModelSerializer):
     project=ProjectSerializer()
-    assigned_to=UserSerializer(many=True)
+    assigned_to=UserSerializer(many=True,read_only=True)
+    project_id=serializers.PrimaryKeyRelatedField(
+        queryset=Project.objects.all(),
+    )
+    assigned_to_ids=serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(),
+        many=True,
+        source="assigned_to"
+    )
     def validate_title(self,value):
         if len(value)<5:
             raise serializers.ValidationError("" \
