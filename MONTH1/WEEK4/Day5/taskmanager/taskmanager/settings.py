@@ -130,3 +130,9 @@ MAILERS = {
 }
 LOGIN_URL="/login/"
 LOGIN_REDIRECT_URL = "/tasks/"
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ],
+}

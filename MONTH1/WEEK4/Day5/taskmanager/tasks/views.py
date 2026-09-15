@@ -13,6 +13,7 @@ from rest_framework.generics import(
     ListCreateAPIView,
     RetrieveUpdateDestroyAPIView,
 )
+from rest_framework.permissions import IsAuthenticated
 
 class TaskListView(LoginRequiredMixin,ListView):
     model=Task
@@ -68,7 +69,9 @@ class TaskFilterView(View):
         return redirect("task_list")
 
 class TaskListAPIView(ListCreateAPIView):
+
     serializer_class = TaskSerializer
+    permission_classes=[IsAuthenticated]
 
     def get_queryset(self):
         queryset = Task.objects.all()
