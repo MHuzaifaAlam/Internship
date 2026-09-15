@@ -17,6 +17,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 from .permissions import *
+from rest_framework.viewsets import ModelViewSet
 
 
 
@@ -75,8 +76,8 @@ class TaskFilterView(View):
         
         return redirect("task_list")
 
-class TaskListAPIView(ListCreateAPIView):
-
+class TaskViewSet(ModelViewSet):
+    
     serializer_class = TaskSerializer
     permission_classes=[IsAuthenticated]
 
