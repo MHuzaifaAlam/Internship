@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView,DeleteView,CreateView,UpdateView,DetailView,TemplateView
-from .models import Task
+from .models import Task,Project
 from .forms import TaskForm
 from django.views import View
 from django.shortcuts import redirect
@@ -14,8 +14,15 @@ from rest_framework.generics import(
     RetrieveUpdateDestroyAPIView,
 )
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.generics import RetrieveUpdateDestroyAPIView
+from rest_framework.permissions import IsAuthenticated
+from .permissions import *
+
+
+
 
 class TaskListView(LoginRequiredMixin,ListView):
+
     model=Task
     template_name="tasks/task_list.html"
     context_object_name="tasks"
@@ -74,7 +81,9 @@ class TaskListAPIView(ListCreateAPIView):
     permission_classes=[IsAuthenticated]
 
     def get_queryset(self):
-        queryset = Task.objects.all()
+        queryset = Task.objects.filter(
+            assigned_to=self.request.user
+        )
 
         project_id = self.request.query_params.get("project")
 
@@ -85,6 +94,10 @@ class TaskListAPIView(ListCreateAPIView):
 
 class TaskDetailAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class=TaskSerializer
+    permission_classes=[
+        IsAuthenticated,
+        IsTaskAssign
+    ]
     def get_queryset(self):
         queryset=Task.objects.all()
         project_id=self.request.query_params.get("project")
@@ -129,4 +142,10 @@ class TaskDetailAPIView(RetrieveUpdateDestroyAPIView):
     #     task.delete()
     #     return Response({"message":"Task Deleted Sucessfully"},status=204)
     
-        
+class ProjectDetailApiView(RetrieveUpdateDestroyAPIView):
+    queryset=Project.objects.all()
+    serializer_class=ProjectSerializer
+    permission_classes=[
+        IsAuthenticated,
+        IsProjectOwner
+    ]
