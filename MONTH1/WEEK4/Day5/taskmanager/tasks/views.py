@@ -80,7 +80,10 @@ class TaskViewSet(ModelViewSet):
     
     serializer_class = TaskSerializer
     permission_classes=[IsAuthenticated]
-
+    filterset_fields=[
+        "project",
+        "estimated_hours",
+    ]
     def get_queryset(self):
         queryset = Task.objects.filter(
             assigned_to=self.request.user
