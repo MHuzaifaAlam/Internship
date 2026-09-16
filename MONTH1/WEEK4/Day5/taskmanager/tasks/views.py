@@ -18,7 +18,8 @@ from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 from .permissions import *
 from rest_framework.viewsets import ModelViewSet
-
+from django_filters.rest_framework import DjangoFilterBackend
+from .filters import TaskFilter
 
 
 
@@ -80,10 +81,8 @@ class TaskViewSet(ModelViewSet):
     
     serializer_class = TaskSerializer
     permission_classes=[IsAuthenticated]
-    filterset_fields=[
-        "project",
-        "estimated_hours",
-    ]
+    filter_backends=[DjangoFilterBackend]
+    filterset_class=TaskFilter
     def get_queryset(self):
         queryset = Task.objects.filter(
             assigned_to=self.request.user
