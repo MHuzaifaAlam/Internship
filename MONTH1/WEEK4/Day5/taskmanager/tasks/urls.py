@@ -9,6 +9,6 @@ urlpatterns=[
     path("delete/<int:id>",TaskDeleteView.as_view(),name="delete_task"),
     path("filter/<str:filter_type>/",TaskFilterView.as_view(),name="task_filter"),
     # path('api/tasks/',TaskListAPIView.as_view(),name="api_task_list"),
-    path('api/tasks/<int:pk/',TaskDetailAPIView.as_view(),name="api_task_detail"),
+    path('api/tasks/<int:pk>',TaskDetailAPIView.as_view(),name="api_task_detail"),
  
 ]

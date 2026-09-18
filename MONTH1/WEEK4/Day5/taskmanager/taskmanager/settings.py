@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'tasks.apps.TasksConfig',
     "rest_framework",
-    "django_filters"
+    "django_filters",
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -150,4 +151,10 @@ REST_FRAMEWORK = {
     "DEFAULT_THROTTLE_RATES": {
         "user": "5/minute",
     },
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Task Manager API",
+    "DESCRIPTION": "API for managing tasks and projects",
+    "VERSION": "1.0.0",
 }
